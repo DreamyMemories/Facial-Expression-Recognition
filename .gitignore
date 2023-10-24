@@ -2,4 +2,5 @@ dataset/
 data/
 test/
 .conda/
+first_model_experiment/
 ref_model_experiment/
