@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import { Button, Dimensions, Platform, StyleSheet, Text, View, Image } from 'react-native';
 import * as tf from '@tensorflow/tfjs';
 import {bundleResourceIO, decodeJpeg} from "@tensorflow/tfjs-react-native";
@@ -6,73 +5,43 @@ import React, { useEffect } from 'react';
 import { Camera, CameraType } from 'expo-camera';
 import { cameraWithTensors } from '@tensorflow/tfjs-react-native';
 import * as blazeface from "@tensorflow-models/blazeface";
-import * as FileSystem from 'expo-file-system';
-import * as jpeg from 'jpeg-js';
-import { BoundingBox } from '@tensorflow-models/face-detection/dist/shared/calculators/interfaces/shape_interfaces';
+import { classes, previewHeight, previewLeft, previewTop, previewWidth } from './constants';
+import { indexOfMax } from './helper';
+import { styles } from './styles';
 
-const { width, height } = Dimensions.get("window");
 const TensorCamera = cameraWithTensors(Camera);
-const previewLeft = 0;
-const previewTop = 60;
-const previewWidth = 355;
-const previewHeight = 500;
-const classes = ["Angry", "Disgust", "Fear", "Happy", "Neutral", "Sad", "Surprise"];
+let textureDims: { height: any; width: any };
+  Platform.OS === "ios"
+    ? (textureDims = { height: 1920, width: 1080 })
+    : (textureDims = { height: 1920, width: 1080 });
 
 export default function App() {
   const [model, setModel] = React.useState<void | tf.LayersModel>(undefined);
   const [type, setType] = React.useState(CameraType.front);
-  const [isModelReady, setIsModelReady] = React.useState(false);
   const [faceDetectionModel, setFaceDetectionModel] = React.useState<blazeface.BlazeFaceModel>();
-  // const [faceDetectionModel, setFaceDetectionModel] = React.useState<faceDetection.FaceDetector>();
   const [modelFaces, setModelFaces] = React.useState<{faces: blazeface.NormalizedFace[]}>({faces: []});
   const [result, setResult] = React.useState("");
-  const [boundingBoxStyle, setBoundingBoxStyle] = React.useState({});
 
   const modelJSON = require("./model.json");
   const modelWeights = require("./group1-shard1of1.bin");
+
   let requestAnimationFrameId = 0;
   let frameCount = 0;
   let makePredictionsEveryNFrames = 10;
   const tensorDims = {height: 48, width: 48, depth: 3}
 
-  const scale = {
-    height: width / 48,
-    width: (height * 0.7) / 48,
-  };
-  
-  // Load the model and print the summary
-  // const model = await tf.loadLayersModel("./model.json").then((model) => console.log(model.summary()));
   const loadModel = async () => {
     const model = await tf.loadLayersModel(bundleResourceIO(modelJSON, modelWeights)).catch(e => console.log(e));
-
     setModel(model);
-    setIsModelReady(true);
   }
 
   const loadFaceDetectionModel = async () => {
     const model = await blazeface.load();
     console.log("Face detection model loaded")
-    // const model = faceDetection.SupportedModels.MediaPipeFaceDetector;
-    // const detectorConfig: any = {
-    //   runtime: 'tfjs',
-    // };
-    // const detector = await faceDetection.createDetector(model, detectorConfig);
     setFaceDetectionModel(model);
   };
 
-  const indexOfMax = (arr : any) => {
-    var max: Number = arr[0];
-    var maxIndex = 0;
-
-    for (var i = 1; i < arr.length; i++) {
-        if (arr[i] > max) {
-            maxIndex = i;
-            max = arr[i];
-        }
-    }
-
-    return { max, maxIndex};
-  }
+  
 
   // Handle the camera stream and classify the image
   const handleCameraStream = (images: any) => {
@@ -126,12 +95,13 @@ export default function App() {
             const { max, maxIndex } = indexOfMax(prediction.dataSync())
             const result = "Classification is " + classes[maxIndex] + " with a probablity of " + max
             setResult(result)
+            tf.dispose(prediction)
+            tf.dispose(imageResize)
+            tf.dispose(image)
           }
            
           };
           
-      
-        //tf.dispose(imageTensor)
         tf.dispose(nextImageTensor);
       }
       frameCount += 1;
@@ -141,10 +111,7 @@ export default function App() {
     loop();
   };
 
-  let textureDims: { height: any; width: any };
-  Platform.OS === "ios"
-    ? (textureDims = { height: 1920, width: 1080 })
-    : (textureDims = { height: 1920, width: 1080 });
+  
 
   useEffect(() => {
     (async () => {
@@ -171,7 +138,7 @@ export default function App() {
       return faces.map((face, i) => {
         const topLeft = face.topLeft as tf.Tensor1D;
         const bottomRight = face.bottomRight as tf.Tensor1D;
-        const bbLeft = topLeft.dataSync()[0] * scale.width;
+        const bbLeft = topLeft.dataSync()[0] * scale.width + 120;
         const boxStyle = Object.assign({}, styles.bbox,{
           left: flipHorizontal
             ? previewWidth - bbLeft - previewLeft
@@ -186,25 +153,6 @@ export default function App() {
       });
     }
   };
-
-  const handleFaceDetected = async (faces: any) => {
-    if (faces.faces.length > 0) {
-      const box = faces.faces[0].bounds
-    console.log(faces.faces[0].bounds)
-    setBoundingBoxStyle({
-      position: 'absolute',
-      left: box.origin.x,
-      top: box.origin.y * 1.3,
-      width: box.size.width , 
-      height: box.size.height + 100,
-      borderWidth: 2,
-      borderColor: 'red',
-      zIndex: 1000
-    });
-    } else {
-      setBoundingBoxStyle({})
-    }
-  }
 
   useEffect(() => {
     return () => {
@@ -231,54 +179,10 @@ export default function App() {
           useCustomShadersToResize={false}
         />
         {renderBoundingBoxes()}
-        
       </View>
       <View style={styles.result}>{result.length > 0 && <Text>{result}</Text>}</View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "row",
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  result: {
-    position: "absolute",
-    width: "100%",
-    height: "40%",
-    top: "120%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  cameraContainer: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    height: "60%",
-    backgroundColor: "#fff"
-  },
-  camera: {
-    position: "absolute",
-    left: previewLeft,
-    top: previewTop,
-    width: previewWidth,
-    height: previewHeight,
-    zIndex: 1,
-    borderWidth: 1,
-    borderColor: "black",
-    borderRadius: 0
-  },
-  bbox: {
-    position: "absolute",
-    borderWidth: 2,
-    borderColor: "red",
-    borderRadius: 1,
-    zIndex: 1000
-  },
-});
+
