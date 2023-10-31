@@ -7,7 +7,6 @@ import { Camera, CameraType } from 'expo-camera';
 import { cameraWithTensors } from '@tensorflow/tfjs-react-native';
 import * as blazeface from "@tensorflow-models/blazeface";
 import * as FileSystem from 'expo-file-system';
-import * as faceDetection from '@tensorflow-models/face-detection';
 import * as jpeg from 'jpeg-js';
 import { BoundingBox } from '@tensorflow-models/face-detection/dist/shared/calculators/interfaces/shape_interfaces';
 

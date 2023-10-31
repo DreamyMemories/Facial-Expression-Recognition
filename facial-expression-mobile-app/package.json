@@ -12,7 +12,6 @@
     "@mediapipe/face_detection": "^0.4.1646425229",
     "@react-native-async-storage/async-storage": "~1.17.3",
     "@tensorflow-models/blazeface": "^0.0.5",
-    "@tensorflow-models/face-detection": "^1.0.2",
     "@tensorflow/tfjs": "3.18.0",
     "@tensorflow/tfjs-converter": "4.12.0",
     "@tensorflow/tfjs-react-native": "0.8.0",
