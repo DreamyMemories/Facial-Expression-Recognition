@@ -15,9 +15,6 @@
     "moduleResolution": "node",
     "esModuleInterop": true
   },
-  "include": [
-    "./lib/**/*"
-  ],
   "exclude": [
     "node_modules"
   ],
