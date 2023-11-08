@@ -4,3 +4,4 @@ test/
 .conda/
 first_model_experiment/
 ref_model_experiment/
+model_selection_experiment/
