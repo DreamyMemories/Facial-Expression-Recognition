@@ -42,28 +42,27 @@ export const styles = StyleSheet.create({
       fontSize: 20,
       color: "#3d3d3d",
     },
-    result: {
-      position: "absolute",
-      width: "100%",
-      height: "40%",
-      top: "120%",
+    cameraPageContainer: {
+      backgroundColor: primaryColor,
+      height: "100%",
+    },
+    resultContainer: {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      paddingTop: 50
+    },
+    resultText: {
+      fontFamily: "Jetbrains",
+      fontSize: 20,
+      color: "#3d3d3d",
     },
     cameraContainer: {
-      display: "flex",
-      flexDirection: "column",
-      justifyContent: "center",
       alignItems: "center",
-      width: "100%",
-      height: "60%",
-      backgroundColor: "#fff"
+      justifyContent: "center",
+      backgroundColor: primaryColor,
     },
     camera: {
-      position: "absolute",
-      left: previewLeft,
-      top: previewTop,
       width: previewWidth,
       height: previewHeight,
       zIndex: 1,

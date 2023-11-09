@@ -16,6 +16,7 @@ import { cameraWithTensors } from "@tensorflow/tfjs-react-native";
 import * as blazeface from "@tensorflow-models/blazeface";
 import {
   classes,
+  emojiClasses,
   previewHeight,
   previewLeft,
   previewTop,
@@ -43,9 +44,6 @@ export default function App({route} : any ) {
   }>({ faces: [] });
   const [result, setResult] = React.useState("");
 
-  const modelJSON = require("./model.json");
-  const modelWeights = require("./group1-shard1of1.bin");
-
   let requestAnimationFrameId = 0;
   let frameCount = 0;
   let makePredictionsEveryNFrames = 7;
@@ -57,7 +55,6 @@ export default function App({route} : any ) {
       if (frameCount % makePredictionsEveryNFrames === 0) {
         const nextImageTensor = images.next().value;
         if (model && faceDetectionModel) {
-          console.log("Model and face detection model loaded ");
           const faces = await faceDetectionModel.estimateFaces(
             nextImageTensor,
             true
@@ -109,15 +106,18 @@ export default function App({route} : any ) {
             const test = imageResize.div(255);
             const prediction = model.predict(test) as tf.Tensor;
             const { max, maxIndex } = indexOfMax(prediction.dataSync());
-            const result =
-              "Classification is " +
-              classes[maxIndex] +
-              " with a probablity of " +
-              max;
+            // const result =
+            //   "Classification is " +
+            //   classes[maxIndex] +
+            //   " with a probablity of " +
+            //   max;
+            const result = "You are feeling " + emojiClasses[maxIndex] + " " + classes[maxIndex] + " right now";
             setResult(result);
             tf.dispose(prediction);
             tf.dispose(imageResize);
             tf.dispose(image);
+          } else {
+            setResult("No faces detected 🥱");
           }
         }
 
@@ -140,32 +140,32 @@ export default function App({route} : any ) {
       })();
   }, []);
 
-  const renderBoundingBoxes = () => {
-    const { faces } = modelFaces;
-    const scale = {
-      height: styles.camera.height / tensorDims.height,
-      width: styles.camera.width / tensorDims.width,
-    };
-    const flipHorizontal = Platform.OS === "ios" ? false : true;
-    if (faces.length > 0) {
-      return faces.map((face, i) => {
-        const topLeft = face.topLeft as tf.Tensor1D;
-        const bottomRight = face.bottomRight as tf.Tensor1D;
-        const bbLeft = topLeft.dataSync()[0] * scale.width + 120;
-        const boxStyle = Object.assign({}, styles.bbox, {
-          left: flipHorizontal
-            ? previewWidth - bbLeft - previewLeft
-            : bbLeft + previewLeft,
-          top: topLeft.dataSync()[1] * scale.height + 20,
-          width:
-            (bottomRight.dataSync()[0] - topLeft.dataSync()[0]) * scale.width,
-          height:
-            (bottomRight.dataSync()[1] - topLeft.dataSync()[1]) * scale.height,
-        });
-        return <View style={boxStyle} key={`faces${i}}`}></View>;
-      });
-    }
-  };
+//   const renderBoundingBoxes = () => {
+//     const { faces } = modelFaces;
+//     const scale = {
+//       height: styles.camera.height / tensorDims.height,
+//       width: styles.camera.width / tensorDims.width,
+//     };
+//     const flipHorizontal = Platform.OS === "ios" ? false : true;
+//     if (faces.length > 0) {
+//       return faces.map((face, i) => {
+//         const topLeft = face.topLeft as tf.Tensor1D;
+//         const bottomRight = face.bottomRight as tf.Tensor1D;
+//         const bbLeft = topLeft.dataSync()[0] * scale.width + 120;
+//         const boxStyle = Object.assign({}, styles.bbox, {
+//           left: flipHorizontal
+//             ? previewWidth - bbLeft - previewLeft
+//             : bbLeft + previewLeft,
+//           top: topLeft.dataSync()[1] * scale.height + 20,
+//           width:
+//             (bottomRight.dataSync()[0] - topLeft.dataSync()[0]) * scale.width,
+//           height:
+//             (bottomRight.dataSync()[1] - topLeft.dataSync()[1]) * scale.height,
+//         });
+//         return <View style={boxStyle} key={`faces${i}}`}></View>;
+//       });
+//     }
+//   };
 
   useEffect(() => {
     return () => {
@@ -174,7 +174,7 @@ export default function App({route} : any ) {
   }, [requestAnimationFrameId]);
 
   return (
-    <View>
+    <View style={styles.cameraPageContainer}>
       <View style={styles.cameraContainer}>
         <TensorCamera
           // Standard Camera props
@@ -193,8 +193,8 @@ export default function App({route} : any ) {
         />
         {/* {renderBoundingBoxes()} */}
       </View>
-      <View style={styles.result}>
-        {result.length > 0 && <Text>{result}</Text>}
+      <View style={styles.resultContainer}>
+        {result.length > 0 && <Text style={styles.resultText}>{result}</Text>}
       </View>
     </View>
   );
