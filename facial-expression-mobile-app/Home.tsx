@@ -8,7 +8,7 @@ export function HomeScreen({ navigation }: any) {
         <View style={styles.homeContainer} >
             <Image source={require('./assets/emotion.jpg')} style={styles.homeImage} />
             <Text style={styles.homeMainText}>Welcome to the Facial Expression Recognition App, press Start to continue</Text>
-            <Pressable  onPress={() => navigation.navigate('VideoScreen')} style={styles.homeButtonContainer}>
+            <Pressable  onPress={() => navigation.navigate('Video Screen')} style={styles.homeButtonContainer}>
                 <Text style={styles.homeButtonText}>Start</Text>
             </Pressable>
         </View>

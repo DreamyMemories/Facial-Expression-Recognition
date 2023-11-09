@@ -4,8 +4,8 @@ import { bundleResourceIO } from "@tensorflow/tfjs-react-native";
 import * as tf from "@tensorflow/tfjs";
 import { useState } from "react";
 import * as blazeface from "@tensorflow-models/blazeface";
-const modelJSON = require("./model.json");
-const modelWeights = require("./group1-shard1of1.bin");
+const modelJSON = require("./model/model.json");
+const modelWeights = require("./model/group1-shard1of1.bin");
 
 export function VideoScreen({ navigation }: any) {
   const [model, setModel] = useState<tf.LayersModel | undefined>(undefined);

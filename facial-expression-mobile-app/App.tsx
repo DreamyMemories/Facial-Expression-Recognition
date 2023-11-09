@@ -29,7 +29,7 @@ export default function App() {
     <NavigationContainer >
       <Stack.Navigator screenOptions={{}}>
         <Stack.Screen name="Home" component={HomeScreen} options={{headerLargeTitleStyle: {fontFamily: "Jetbrains"}}}/>
-        <Stack.Screen name="VideoScreen" component={VideoScreen} />
+        <Stack.Screen name="Video Screen" component={VideoScreen} />
         <Stack.Screen name="Camera" component={Camera} />
       </Stack.Navigator>
     </NavigationContainer>
