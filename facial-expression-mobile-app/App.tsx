@@ -27,7 +27,7 @@ export default function App() {
 
   let requestAnimationFrameId = 0;
   let frameCount = 0;
-  let makePredictionsEveryNFrames = 10;
+  let makePredictionsEveryNFrames = 7;
   const tensorDims = {height: 48, width: 48, depth: 3}
 
   const loadModel = async () => {
@@ -111,8 +111,6 @@ export default function App() {
     loop();
   };
 
-  
-
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -178,7 +176,7 @@ export default function App() {
           autorender={true}
           useCustomShadersToResize={false}
         />
-        {renderBoundingBoxes()}
+        {/* {renderBoundingBoxes()} */}
       </View>
       <View style={styles.result}>{result.length > 0 && <Text>{result}</Text>}</View>
     </View>
