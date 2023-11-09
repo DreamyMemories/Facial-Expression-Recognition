@@ -36,9 +36,8 @@ LogBox.ignoreAllLogs(true);
 export default function App({route} : any ) {
   const [model, setModel] = React.useState<tf.LayersModel>(route.params.customModel);
   const [type, setType] = React.useState(CameraType.front);
-  const [frameWorkReady, setFrameWorkReady] = React.useState(false);
   const [faceDetectionModel, setFaceDetectionModel] =
-    React.useState<blazeface.BlazeFaceModel>();
+    React.useState<blazeface.BlazeFaceModel>(route.params.faceDetectionModel);
   const [modelFaces, setModelFaces] = React.useState<{
     faces: blazeface.NormalizedFace[];
   }>({ faces: [] });
@@ -52,21 +51,6 @@ export default function App({route} : any ) {
   let makePredictionsEveryNFrames = 7;
   const tensorDims = { height: 48, width: 48, depth: 3 };
 
-  const loadModel = async () => {
-    const model = await tf
-      .loadLayersModel(bundleResourceIO(modelJSON, modelWeights))
-      .catch((e) => console.log(e));
-    if (model) {
-        setModel(model)
-        console.log("Custom Model loaded ", model !== undefined);
-    }
-  };
-
-  const loadFaceDetectionModel = async () => {
-    const model = await blazeface.load();
-    setFaceDetectionModel(model);
-    console.log("Face detection model loaded ", faceDetectionModel !== undefined);   
-  };
   // Handle the camera stream and classify the image
   const handleCameraStream = (images: any) => {
     const loop = async () => {
@@ -147,19 +131,13 @@ export default function App({route} : any ) {
   };
 
   useEffect(() => {
-    if (!frameWorkReady) {
       (async () => {
         const { status } = await Camera.requestCameraPermissionsAsync();
         if (status !== "granted") {
           alert("Sorry, we need camera roll permissions to make this work!");
         }
-
         await tf.ready();
-        await loadFaceDetectionModel();
-        // await loadModel();
-        setFrameWorkReady(true);
       })();
-    }
   }, []);
 
   const renderBoundingBoxes = () => {
