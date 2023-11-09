@@ -46,7 +46,7 @@ export default function App({route} : any ) {
 
   let requestAnimationFrameId = 0;
   let frameCount = 0;
-  let makePredictionsEveryNFrames = 7;
+  let makePredictionsEveryNFrames = 10;
   const tensorDims = { height: 48, width: 48, depth: 3 };
 
   // Handle the camera stream and classify the image

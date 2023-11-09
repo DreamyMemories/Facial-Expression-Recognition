@@ -19,7 +19,7 @@ export const styles = StyleSheet.create({
       height: "100%",
     },
     homeImage: {
-      width: 300,
+      width: 400,
       height: 300,
       alignSelf: "center",
       marginBottom: 50,
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
     homeMainText: {
       fontFamily:"Jetbrains",
       textAlign: "center",
-      fontSize: 20,
+      fontSize: 23,
       paddingBottom: 50,
       color: "#3d3d3d",
     },
