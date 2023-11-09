@@ -1,5 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StatusBar, StyleSheet } from 'react-native';
 import { previewHeight, previewLeft, previewTop, previewWidth } from './constants';
+
+const primaryColor = "#F2F6D0"
+const secondaryColor = "#E4BE9E"
 
 export const styles = StyleSheet.create({
     container: {
@@ -7,6 +10,37 @@ export const styles = StyleSheet.create({
       flexDirection: "row",
       alignItems: 'center',
       justifyContent: 'center',
+    },
+    homeContainer: {
+      backgroundColor: primaryColor,
+      justifyContent: "center",
+      padding: 20,
+      paddingHorizontal: 50,
+      height: "100%",
+    },
+    homeImage: {
+      width: 300,
+      height: 300,
+      alignSelf: "center",
+      marginBottom: 50,
+    },
+    homeMainText: {
+      fontFamily:"Jetbrains",
+      textAlign: "center",
+      fontSize: 20,
+      paddingBottom: 50,
+      color: "#3d3d3d",
+    },
+    homeButtonContainer: {
+      backgroundColor: secondaryColor,
+      borderRadius: 10,
+      padding: 30,
+    },
+    homeButtonText: {
+      fontFamily:"Jetbrains",
+      textAlign: "center",
+      fontSize: 20,
+      color: "#3d3d3d",
     },
     result: {
       position: "absolute",

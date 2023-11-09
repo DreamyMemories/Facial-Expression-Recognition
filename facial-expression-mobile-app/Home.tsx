@@ -1,10 +1,16 @@
-import { View, Text, Button } from "react-native";
+import { View, Text, Pressable, Image } from "react-native";
 import React from "react";
+import { styles } from "./styles";
+import SafeAreaView from 'react-native-safe-area-view';
 
 export function HomeScreen({ navigation }: any) {
     return (
-        <View>
-            <Button title="Welcome to the Facial Expression App" onPress={() => navigation.navigate('VideoScreen')} />
+        <View style={styles.homeContainer} >
+            <Image source={require('./assets/emotion.jpg')} style={styles.homeImage} />
+            <Text style={styles.homeMainText}>Welcome to the Facial Expression Recognition App, press Start to continue</Text>
+            <Pressable  onPress={() => navigation.navigate('VideoScreen')} style={styles.homeButtonContainer}>
+                <Text style={styles.homeButtonText}>Start</Text>
+            </Pressable>
         </View>
     )
 }
