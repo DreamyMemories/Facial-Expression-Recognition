@@ -11,6 +11,8 @@
   "dependencies": {
     "@mediapipe/face_detection": "^0.4.1646425229",
     "@react-native-async-storage/async-storage": "~1.17.3",
+    "@react-navigation/native": "^6.1.9",
+    "@react-navigation/native-stack": "^6.9.17",
     "@tensorflow-models/blazeface": "^0.0.5",
     "@tensorflow/tfjs": "3.18.0",
     "@tensorflow/tfjs-converter": "4.12.0",
@@ -28,12 +30,16 @@
     "react-native": "0.68.2",
     "react-native-fs": "2.14.1",
     "react-native-gesture-handler": "~2.2.1",
+    "react-native-reanimated": "~2.8.0",
+    "react-native-safe-area-context": "4.2.4",
+    "@react-native-community/masked-view": "0.1.10",
+    "react-native-screens": "3.11.1",
     "react-native-web": "0.17.7"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
     "@expo/webpack-config": "^0.15.0",
-    "@types/react": "~16.9.35",
+    "@types/react": "^17.0.41",
     "@types/react-native": "~0.63.2",
     "babel-preset-expo": "~8.3.0",
     "jest-expo": "~41.0.0",
