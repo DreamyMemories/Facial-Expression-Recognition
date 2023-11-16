@@ -6,3 +6,5 @@ first_model_experiment/
 ref_model_experiment/
 model_selection_experiment/
 model_selection_experiment_2/
+model_selection_experiment_3/
+logs/
