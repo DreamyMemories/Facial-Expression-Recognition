@@ -10,7 +10,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { indexOfMax } from './helper';
 import { styles } from './styles';
 import { HomeScreen } from './Home';
-import { VideoScreen } from './VideoScreen';
 import Camera from './Camera';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -29,8 +28,7 @@ export default function App() {
     <NavigationContainer >
       <Stack.Navigator screenOptions={{}}>
         <Stack.Screen name="Home" component={HomeScreen} options={{headerLargeTitleStyle: {fontFamily: "Jetbrains"}}}/>
-        <Stack.Screen name="Video Screen" component={VideoScreen} />
-        <Stack.Screen name="Camera" component={Camera} />
+        <Stack.Screen name="Camera" component={Camera} options={{headerLargeTitleStyle: {fontFamily: "Jetbrains"}}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

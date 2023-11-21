@@ -23,6 +23,7 @@ export const styles = StyleSheet.create({
       height: 300,
       alignSelf: "center",
       marginBottom: 50,
+      bottom: 40
     },
     homeMainText: {
       fontFamily:"Jetbrains",
@@ -45,6 +46,13 @@ export const styles = StyleSheet.create({
     cameraPageContainer: {
       backgroundColor: primaryColor,
       height: "100%",
+    },
+    modelLoadedText: {
+        fontFamily:"Jetbrains",
+        textAlign: "center",
+        fontSize: 15,
+        color: "#3d3d3d",
+        paddingBottom: 20
     },
     resultContainer: {
       display: "flex",
