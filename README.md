@@ -29,7 +29,9 @@ git clone https://github.com/DreamyMemories/Facial-Expression-Recognition.git
 pip install -r requirements.txt
 ```
 
-3. For the mobile app, navigate to the `facial-expression-mobile-app` directory and run:
+3. Get the dataset like FER2013 from [Kaggle](https://www.kaggle.com/datasets/msambare/fer2013) and place it in the `data` directory.
+
+4. For the mobile app, navigate to the `facial-expression-mobile-app` directory and run:
 
 ```bash
 cd facial-expression-mobile-app
